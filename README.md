@@ -98,6 +98,8 @@ public void buscarLibroPorTitulo() {
     libroService.buscarLibroPorTitulo(tituloLibro, json);
 }
 ```
+![busqueda_de_libros_no_encontrado](/img/Busqueda_Libros1.jpg)
+![busqueda_de_libros_encontrado](/img/Busqueda_Libros2.jpg)
 
 #### 2) Listar libros registrados.
 Muestra todos los libros que están registrados en la base de datos. Esto proporciona al usuario una visión general 
