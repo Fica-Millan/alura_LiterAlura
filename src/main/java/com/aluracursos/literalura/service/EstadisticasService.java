@@ -6,6 +6,7 @@ import com.aluracursos.literalura.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class EstadisticasService {
         mostrarRecuentoTotalLibros();
         mostrarRecuentoTotalAutores();
         mostrarRecuentoLibrosPorIdioma();
+        mostrarEstadisticasDescargasLibros();
     }
 
     private void mostrarRecuentoLibrosPorIdioma() {
@@ -33,7 +35,7 @@ public class EstadisticasService {
                 .collect(Collectors.groupingBy(Libro::getIdioma, Collectors.counting()));
 
         recuentoPorIdioma.forEach((idioma, recuento) ->
-                System.out.println("        " + idioma.toString().toLowerCase()  + ": " + recuento));
+                System.out.println("        - " + idioma.toString().toLowerCase()  + ": " + recuento));
     }
 
     private void mostrarRecuentoTotalLibros() {
@@ -46,6 +48,19 @@ public class EstadisticasService {
         long recuentoTotal = autores.size(); // Obtener el tamaño de la lista de autores únicos
 
         System.out.println("    * Recuento total de autores cargados: " + recuentoTotal);
+    }
+
+    private void mostrarEstadisticasDescargasLibros() {
+        System.out.println("    * Datos estadísticos de descargas: ");
+
+        DoubleSummaryStatistics estadisticasDescargas = librosRepository.findAll().stream()
+                .mapToDouble(Libro::getNumeroDescargas)
+                .filter(descargas -> descargas > 0)
+                .summaryStatistics();
+
+        System.out.println("        - Cantidad máxima: " + estadisticasDescargas.getMax());
+        System.out.println("        - Cantidad mínima: " + estadisticasDescargas.getMin());
+        System.out.println("        - Cantidad media: " + estadisticasDescargas.getAverage());
     }
 }
 
